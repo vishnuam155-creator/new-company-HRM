@@ -55,6 +55,15 @@ const initializeData = () => {
   if (!localStorage.getItem('relievingLetters')) {
     localStorage.setItem('relievingLetters', JSON.stringify([]));
   }
+
+  // Initialize employee login credentials
+  if (!localStorage.getItem('employeeCredentials')) {
+    const defaultCredentials = [
+      { employeeId: 'emp-1', email: 'john@company.com', password: 'john123' },
+      { employeeId: 'emp-2', email: 'jane@company.com', password: 'jane123' },
+    ];
+    localStorage.setItem('employeeCredentials', JSON.stringify(defaultCredentials));
+  }
 };
 
 initializeData();
@@ -219,4 +228,41 @@ export const deleteRelievingLetter = (id: string): void => {
   const relievingLetters = getRelievingLetters();
   const filtered = relievingLetters.filter(letter => letter.id !== id);
   localStorage.setItem('relievingLetters', JSON.stringify(filtered));
+};
+
+// Employee Credential operations
+export interface EmployeeCredential {
+  employeeId: string;
+  email: string;
+  password: string;
+}
+
+export const getEmployeeCredentials = (): EmployeeCredential[] => {
+  return JSON.parse(localStorage.getItem('employeeCredentials') || '[]');
+};
+
+export const addEmployeeCredential = (credential: EmployeeCredential): void => {
+  const credentials = getEmployeeCredentials();
+  credentials.push(credential);
+  localStorage.setItem('employeeCredentials', JSON.stringify(credentials));
+};
+
+export const updateEmployeeCredential = (employeeId: string, updates: Partial<EmployeeCredential>): void => {
+  const credentials = getEmployeeCredentials();
+  const index = credentials.findIndex(cred => cred.employeeId === employeeId);
+  if (index !== -1) {
+    credentials[index] = { ...credentials[index], ...updates };
+    localStorage.setItem('employeeCredentials', JSON.stringify(credentials));
+  }
+};
+
+export const deleteEmployeeCredential = (employeeId: string): void => {
+  const credentials = getEmployeeCredentials();
+  const filtered = credentials.filter(cred => cred.employeeId !== employeeId);
+  localStorage.setItem('employeeCredentials', JSON.stringify(filtered));
+};
+
+export const verifyEmployeeCredential = (email: string, password: string): EmployeeCredential | null => {
+  const credentials = getEmployeeCredentials();
+  return credentials.find(cred => cred.email === email && cred.password === password) || null;
 };

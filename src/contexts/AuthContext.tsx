@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '@/types';
+import { verifyEmployeeCredential, getEmployee } from '@/lib/storage';
 
 interface AuthContextType {
   user: User | null;
@@ -21,17 +22,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
-    // Mock authentication - In production, this would call an API
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const foundUser = users.find((u: User) => u.email === email);
-
-    if (foundUser && password === 'password123') {
-      setUser(foundUser);
-      localStorage.setItem('currentUser', JSON.stringify(foundUser));
-      return true;
-    }
-
-    // Default admin login
+    // Check admin login first
     if (email === 'admin@company.com' && password === 'admin123') {
       const adminUser: User = {
         id: 'admin-1',
@@ -42,6 +33,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setUser(adminUser);
       localStorage.setItem('currentUser', JSON.stringify(adminUser));
       return true;
+    }
+
+    // Check employee credentials
+    const credential = verifyEmployeeCredential(email, password);
+    if (credential) {
+      const employee = getEmployee(credential.employeeId);
+      if (employee && employee.status === 'active') {
+        const employeeUser: User = {
+          id: employee.id,
+          email: employee.email,
+          name: employee.name,
+          role: 'employee',
+        };
+        setUser(employeeUser);
+        localStorage.setItem('currentUser', JSON.stringify(employeeUser));
+        return true;
+      }
     }
 
     return false;

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { addEmployee, updateEmployee, getEmployee } from '@/lib/storage';
+import { addEmployee, updateEmployee, getEmployee, addEmployeeCredential } from '@/lib/storage';
 import { Employee } from '@/types';
 import { generateId } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -79,7 +79,19 @@ const EmployeeForm = () => {
       toast.success('Employee updated successfully');
     } else {
       addEmployee(employeeData);
-      toast.success('Employee added successfully');
+
+      // Create default login credentials for new employee
+      // Default password is first name + 123 (e.g., john123)
+      const firstName = formData.name.split(' ')[0].toLowerCase();
+      const defaultPassword = `${firstName}123`;
+
+      addEmployeeCredential({
+        employeeId: employeeData.id,
+        email: formData.email,
+        password: defaultPassword,
+      });
+
+      toast.success(`Employee added successfully! Login: ${formData.email} / ${defaultPassword}`);
     }
 
     navigate('/employees');
