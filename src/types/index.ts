@@ -18,13 +18,17 @@ export interface Employee {
   salary: number;
   probationEndDate: string;
   status: 'active' | 'inactive';
+  image?: string;
+  address?: string;
+  emergencyContact?: string;
+  bloodGroup?: string;
   documents?: EmployeeDocument[];
 }
 
 export interface EmployeeDocument {
   id: string;
   employeeId: string;
-  type: 'id_card' | 'offer_letter' | 'payslip' | 'other';
+  type: 'id_card' | 'offer_letter' | 'payslip' | 'relieving_letter' | 'other';
   name: string;
   url: string;
   uploadedAt: string;
@@ -81,4 +85,51 @@ export interface DashboardStats {
   upcomingProbationEnd: number;
   pendingIncrements: number;
   pendingLeaves: number;
+}
+
+export interface OfferLetter {
+  id: string;
+  candidateName: string;
+  candidateEmail: string;
+  candidatePhone: string;
+  candidateAddress: string;
+  position: string;
+  department: string;
+  salary: number;
+  joiningDate: string;
+  probationPeriod: number; // in months
+  benefits: string[];
+  workLocation: string;
+  reportingTo: string;
+  workingHours: string;
+  generatedDate: string;
+  generatedBy: string;
+  status: 'draft' | 'sent' | 'accepted' | 'rejected';
+  acceptedDate?: string;
+  employeeId?: string; // Set when candidate joins as employee
+}
+
+export interface RelievingLetter {
+  id: string;
+  employeeId: string;
+  employeeName: string;
+  employeeEmail: string;
+  position: string;
+  department: string;
+  joiningDate: string;
+  relievingDate: string;
+  lastWorkingDay: string;
+  reason: string;
+  noticePeriodServed: boolean;
+  clearanceStatus: {
+    hr: boolean;
+    finance: boolean;
+    it: boolean;
+    admin: boolean;
+  };
+  generatedDate: string;
+  generatedBy: string;
+  status: 'draft' | 'generated' | 'issued';
+  performanceRating?: 'excellent' | 'good' | 'average' | 'poor';
+  rehireEligible: boolean;
 }

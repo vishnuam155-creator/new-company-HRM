@@ -8,6 +8,10 @@ import {
   FileText,
   TrendingUp,
   Megaphone,
+  FilePlus,
+  FileCheck,
+  BarChart3,
+  CalendarCheck,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -27,9 +31,13 @@ export const AppSidebar = () => {
 
   const adminMenuItems = [
     { title: 'Dashboard', url: '/dashboard', icon: LayoutDashboard },
+    { title: 'Analytics', url: '/analytics', icon: BarChart3 },
     { title: 'Employees', url: '/employees', icon: Users },
+    { title: 'Offer Letters', url: '/offer-letters', icon: FilePlus },
+    { title: 'Relieving Letters', url: '/relieving-letters', icon: FileCheck },
     { title: 'Leave Requests', url: '/leaves', icon: Calendar },
     { title: 'Attendance', url: '/attendance', icon: Clock },
+    { title: 'Working Days', url: '/working-days', icon: CalendarCheck },
     { title: 'Increments', url: '/increments', icon: TrendingUp },
     { title: 'Announcements', url: '/announcements', icon: Megaphone },
   ];

@@ -74,9 +74,27 @@ const Login = () => {
               {loading ? 'Signing in...' : 'Sign In'}
             </Button>
           </form>
-          <div className="mt-6 p-4 bg-muted rounded-lg">
-            <p className="text-sm font-medium mb-2">Demo Credentials:</p>
-            <p className="text-xs text-muted-foreground">Admin: admin@company.com / admin123</p>
+          <div className="mt-6 space-y-3">
+            <div className="p-4 bg-muted rounded-lg">
+              <p className="text-sm font-medium mb-2">Admin Login:</p>
+              <p className="text-xs text-muted-foreground">Email: admin@company.com</p>
+              <p className="text-xs text-muted-foreground">Password: admin123</p>
+            </div>
+            <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg border border-blue-200 dark:border-blue-800">
+              <p className="text-sm font-medium mb-2 text-blue-900 dark:text-blue-100">Employee Logins:</p>
+              <div className="space-y-2">
+                <div>
+                  <p className="text-xs font-medium text-blue-800 dark:text-blue-200">John Doe (Senior Developer)</p>
+                  <p className="text-xs text-blue-600 dark:text-blue-300">Email: john@company.com</p>
+                  <p className="text-xs text-blue-600 dark:text-blue-300">Password: john123</p>
+                </div>
+                <div className="pt-2 border-t border-blue-200 dark:border-blue-800">
+                  <p className="text-xs font-medium text-blue-800 dark:text-blue-200">Jane Smith (Product Manager)</p>
+                  <p className="text-xs text-blue-600 dark:text-blue-300">Email: jane@company.com</p>
+                  <p className="text-xs text-blue-600 dark:text-blue-300">Password: jane123</p>
+                </div>
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

@@ -13,6 +13,12 @@ import MyLeaves from "./pages/MyLeaves";
 import Attendance from "./pages/Attendance";
 import Increments from "./pages/Increments";
 import Announcements from "./pages/Announcements";
+import OfferLetters from "./pages/OfferLetters";
+import RelievingLetters from "./pages/RelievingLetters";
+import Analytics from "./pages/Analytics";
+import WorkingDays from "./pages/WorkingDays";
+import MyProfile from "./pages/MyProfile";
+import MyDocuments from "./pages/MyDocuments";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -101,6 +107,54 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Announcements />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/offer-letters"
+              element={
+                <ProtectedRoute>
+                  <OfferLetters />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/relieving-letters"
+              element={
+                <ProtectedRoute>
+                  <RelievingLetters />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/analytics"
+              element={
+                <ProtectedRoute>
+                  <Analytics />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/working-days"
+              element={
+                <ProtectedRoute>
+                  <WorkingDays />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <MyProfile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/documents"
+              element={
+                <ProtectedRoute>
+                  <MyDocuments />
                 </ProtectedRoute>
               }
             />
