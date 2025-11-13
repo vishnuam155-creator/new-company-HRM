@@ -1,4 +1,4 @@
-import { Employee, LeaveRequest, Attendance, Announcement, SalaryRevision } from '@/types';
+import { Employee, LeaveRequest, Attendance, Announcement, SalaryRevision, OfferLetter, RelievingLetter } from '@/types';
 
 // Initialize default data
 const initializeData = () => {
@@ -46,6 +46,14 @@ const initializeData = () => {
 
   if (!localStorage.getItem('salaryRevisions')) {
     localStorage.setItem('salaryRevisions', JSON.stringify([]));
+  }
+
+  if (!localStorage.getItem('offerLetters')) {
+    localStorage.setItem('offerLetters', JSON.stringify([]));
+  }
+
+  if (!localStorage.getItem('relievingLetters')) {
+    localStorage.setItem('relievingLetters', JSON.stringify([]));
   }
 };
 
@@ -138,4 +146,71 @@ export const addSalaryRevision = (revision: SalaryRevision): void => {
 export const getEmployeeSalaryRevisions = (employeeId: string): SalaryRevision[] => {
   const revisions = getSalaryRevisions();
   return revisions.filter(rev => rev.employeeId === employeeId);
+};
+
+// Offer Letter operations
+export const getOfferLetters = (): OfferLetter[] => {
+  return JSON.parse(localStorage.getItem('offerLetters') || '[]');
+};
+
+export const getOfferLetter = (id: string): OfferLetter | null => {
+  const offerLetters = getOfferLetters();
+  return offerLetters.find(offer => offer.id === id) || null;
+};
+
+export const addOfferLetter = (offerLetter: OfferLetter): void => {
+  const offerLetters = getOfferLetters();
+  offerLetters.push(offerLetter);
+  localStorage.setItem('offerLetters', JSON.stringify(offerLetters));
+};
+
+export const updateOfferLetter = (id: string, updates: Partial<OfferLetter>): void => {
+  const offerLetters = getOfferLetters();
+  const index = offerLetters.findIndex(offer => offer.id === id);
+  if (index !== -1) {
+    offerLetters[index] = { ...offerLetters[index], ...updates };
+    localStorage.setItem('offerLetters', JSON.stringify(offerLetters));
+  }
+};
+
+export const deleteOfferLetter = (id: string): void => {
+  const offerLetters = getOfferLetters();
+  const filtered = offerLetters.filter(offer => offer.id !== id);
+  localStorage.setItem('offerLetters', JSON.stringify(filtered));
+};
+
+// Relieving Letter operations
+export const getRelievingLetters = (): RelievingLetter[] => {
+  return JSON.parse(localStorage.getItem('relievingLetters') || '[]');
+};
+
+export const getRelievingLetter = (id: string): RelievingLetter | null => {
+  const relievingLetters = getRelievingLetters();
+  return relievingLetters.find(letter => letter.id === id) || null;
+};
+
+export const getRelievingLetterByEmployeeId = (employeeId: string): RelievingLetter | null => {
+  const relievingLetters = getRelievingLetters();
+  return relievingLetters.find(letter => letter.employeeId === employeeId) || null;
+};
+
+export const addRelievingLetter = (relievingLetter: RelievingLetter): void => {
+  const relievingLetters = getRelievingLetters();
+  relievingLetters.push(relievingLetter);
+  localStorage.setItem('relievingLetters', JSON.stringify(relievingLetters));
+};
+
+export const updateRelievingLetter = (id: string, updates: Partial<RelievingLetter>): void => {
+  const relievingLetters = getRelievingLetters();
+  const index = relievingLetters.findIndex(letter => letter.id === id);
+  if (index !== -1) {
+    relievingLetters[index] = { ...relievingLetters[index], ...updates };
+    localStorage.setItem('relievingLetters', JSON.stringify(relievingLetters));
+  }
+};
+
+export const deleteRelievingLetter = (id: string): void => {
+  const relievingLetters = getRelievingLetters();
+  const filtered = relievingLetters.filter(letter => letter.id !== id);
+  localStorage.setItem('relievingLetters', JSON.stringify(filtered));
 };

@@ -5,11 +5,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Textarea } from '@/components/ui/textarea';
 import { addEmployee, updateEmployee, getEmployee } from '@/lib/storage';
 import { Employee } from '@/types';
 import { generateId } from '@/lib/utils';
 import { toast } from 'sonner';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Upload, X } from 'lucide-react';
 
 const EmployeeForm = () => {
   const { id } = useParams();
@@ -25,6 +26,10 @@ const EmployeeForm = () => {
     joiningDate: '',
     salary: '',
     probationEndDate: '',
+    address: '',
+    emergencyContact: '',
+    bloodGroup: '',
+    image: '',
   });
 
   useEffect(() => {
@@ -40,6 +45,10 @@ const EmployeeForm = () => {
           joiningDate: employee.joiningDate,
           salary: employee.salary.toString(),
           probationEndDate: employee.probationEndDate,
+          address: employee.address || '',
+          emergencyContact: employee.emergencyContact || '',
+          bloodGroup: employee.bloodGroup || '',
+          image: employee.image || '',
         });
       }
     }
@@ -59,6 +68,10 @@ const EmployeeForm = () => {
       salary: parseFloat(formData.salary),
       probationEndDate: formData.probationEndDate,
       status: 'active',
+      address: formData.address,
+      emergencyContact: formData.emergencyContact,
+      bloodGroup: formData.bloodGroup,
+      image: formData.image,
     };
 
     if (isEdit) {
@@ -72,10 +85,36 @@ const EmployeeForm = () => {
     navigate('/employees');
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        toast.error('Image size should be less than 5MB');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setFormData({
+          ...formData,
+          image: reader.result as string,
+        });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = () => {
+    setFormData({
+      ...formData,
+      image: '',
     });
   };
 
@@ -102,6 +141,46 @@ const EmployeeForm = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Image Upload Section */}
+              <div className="space-y-2">
+                <Label>Employee Photo</Label>
+                <div className="flex items-center gap-4">
+                  {formData.image ? (
+                    <div className="relative">
+                      <img
+                        src={formData.image}
+                        alt="Employee"
+                        className="w-32 h-32 rounded-lg object-cover border-2 border-border"
+                      />
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        size="icon"
+                        className="absolute -top-2 -right-2 h-6 w-6"
+                        onClick={removeImage}
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="w-32 h-32 rounded-lg border-2 border-dashed border-border flex items-center justify-center bg-muted">
+                      <Upload className="h-8 w-8 text-muted-foreground" />
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageUpload}
+                      className="cursor-pointer"
+                    />
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Upload a photo (Max 5MB, JPG/PNG)
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full Name *</Label>
@@ -194,6 +273,40 @@ const EmployeeForm = () => {
                     required
                   />
                 </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="bloodGroup">Blood Group</Label>
+                  <Input
+                    id="bloodGroup"
+                    name="bloodGroup"
+                    value={formData.bloodGroup}
+                    onChange={handleChange}
+                    placeholder="e.g., A+, B-, O+"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="emergencyContact">Emergency Contact</Label>
+                  <Input
+                    id="emergencyContact"
+                    name="emergencyContact"
+                    value={formData.emergencyContact}
+                    onChange={handleChange}
+                    placeholder="Emergency contact number"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="address">Address</Label>
+                <Textarea
+                  id="address"
+                  name="address"
+                  value={formData.address}
+                  onChange={handleChange}
+                  placeholder="Full address"
+                  rows={3}
+                />
               </div>
 
               <div className="flex gap-4 pt-4">
