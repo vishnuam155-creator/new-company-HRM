@@ -110,6 +110,12 @@ export const updateLeaveRequest = (id: string, updates: Partial<LeaveRequest>): 
   }
 };
 
+export const deleteLeaveRequest = (id: string): void => {
+  const leaves = getLeaveRequests();
+  const filtered = leaves.filter(leave => leave.id !== id);
+  localStorage.setItem('leaveRequests', JSON.stringify(filtered));
+};
+
 // Attendance operations
 export const getAttendance = (): Attendance[] => {
   return JSON.parse(localStorage.getItem('attendance') || '[]');

@@ -11,6 +11,7 @@ import {
   FilePlus,
   FileCheck,
   BarChart3,
+  CalendarCheck,
 } from 'lucide-react';
 import {
   Sidebar,
@@ -36,6 +37,7 @@ export const AppSidebar = () => {
     { title: 'Relieving Letters', url: '/relieving-letters', icon: FileCheck },
     { title: 'Leave Requests', url: '/leaves', icon: Calendar },
     { title: 'Attendance', url: '/attendance', icon: Clock },
+    { title: 'Working Days', url: '/working-days', icon: CalendarCheck },
     { title: 'Increments', url: '/increments', icon: TrendingUp },
     { title: 'Announcements', url: '/announcements', icon: Megaphone },
   ];

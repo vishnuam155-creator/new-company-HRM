@@ -16,6 +16,7 @@ import Announcements from "./pages/Announcements";
 import OfferLetters from "./pages/OfferLetters";
 import RelievingLetters from "./pages/RelievingLetters";
 import Analytics from "./pages/Analytics";
+import WorkingDays from "./pages/WorkingDays";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -128,6 +129,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Analytics />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/working-days"
+              element={
+                <ProtectedRoute>
+                  <WorkingDays />
                 </ProtectedRoute>
               }
             />
